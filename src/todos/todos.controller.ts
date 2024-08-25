@@ -15,13 +15,14 @@ export class TodosController {
     @ApiOperation({ summary: 'Create new Todo item' })
     @ApiBody({ type: CreateTodoDto })
     create(@Request() req, @Body() createTodoDto: CreateTodoDto) {
-        console.log(req['user']);
         return this.todosService.create(createTodoDto, req['user'].id);
     }
     
     @Get()
-    findAll() {
-        return this.todosService.findAll();
+    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'Gets logged user todos list' })
+    findMine(@Request() req) {
+        return this.todosService.findUserTodos(req['user'].id);
     }
     
     @Get(':id')

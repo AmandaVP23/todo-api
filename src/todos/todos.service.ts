@@ -30,8 +30,15 @@ export class TodosService {
         return this.todoRepository.save(todo);
     }
     
-    findAll() {
-        return `This action returns all todos`;
+    async findUserTodos(userId: number) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        const todosList = await this.todoRepository.find({ where: { user } })
+
+        return todosList;
     }
     
     findOne(id: number) {

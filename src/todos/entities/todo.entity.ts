@@ -7,7 +7,10 @@ export class Todo {
     id: number;
     
     @Column()
-    text: string;
+    title: string;
+
+    @Column()
+    description: string;
 
     @ManyToOne(() => User, user => user.todos)
     user: User;
