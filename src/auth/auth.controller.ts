@@ -34,6 +34,14 @@ export class AuthController {
         return this.authService.registerUser(registerUserDto);
     }
 
+    @Get('logout')
+    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'Logout user' })
+    logout(@Request() req) {
+        const token = req.headers.authorization.split(' ')[1];
+        return this.authService.logout(token);
+    }
+
     @UseGuards(AuthGuard)
     @Get('protected')
     getProtected(@Request() req) {
