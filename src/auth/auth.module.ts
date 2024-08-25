@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlacklistToken } from './entities/blacklist-token.entity';
+import { AuthGuard } from './auth.guard';
 
 @Module({
     imports: [
@@ -20,6 +21,8 @@ import { BlacklistToken } from './entities/blacklist-token.entity';
     controllers: [AuthController],
     providers: [
         AuthService,
-    ]
+        AuthGuard,
+    ],
+    exports: [AuthService, AuthGuard],
 })
 export class AuthModule {}

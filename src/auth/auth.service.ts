@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { LoginResponseDTO } from './dto/login-response.dto';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/user.entity';
+import { User } from 'src/users/entities/user.entity';
 import { RegisterUserDTO } from '../users/dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BlacklistToken } from './entities/blacklist-token.entity';

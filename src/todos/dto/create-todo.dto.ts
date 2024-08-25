@@ -1,1 +1,6 @@
-export class CreateTodoDto {}
+import { ApiProperty } from "@nestjs/swagger";
+
+export class CreateTodoDto {
+    @ApiProperty()
+    text: string;
+}

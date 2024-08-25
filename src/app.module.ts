@@ -22,9 +22,10 @@ import { ConfigModule } from '@nestjs/config';
             username: process.env.DATABASE_USER,
             password: process.env.DATABASE_USER_PASSWORD,
             database: 'todo',
-            // entities: [__dirname + '/**/*.entity{.ts,.js}'],
+            entities: [__dirname + '/**/*.entity{.ts,.js}'],
             autoLoadEntities: true,
             synchronize: true, // shouldnt be used in production
+            migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
         }),
     ],
     controllers: [AppController],
