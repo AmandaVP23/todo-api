@@ -1,5 +1,6 @@
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TodoStatus } from "../todo-status.enum";
 
 @Entity()
 export class Todo {
@@ -15,7 +16,10 @@ export class Todo {
     @ManyToOne(() => User, user => user.todos)
     user: User;
 
-    // @ManyToOne(() => User, user => user.todos)
-    // user: User;
-    // status
+    @Column({
+        type: 'enum',
+        enum: TodoStatus,
+        default: TodoStatus.PENDING,
+    })
+    status: TodoStatus;
 }

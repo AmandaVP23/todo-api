@@ -17,17 +17,19 @@ export class TodosService {
     
 
     async create(createTodoDto: CreateTodoDto, userId: number) {
-        const user = await this.userRepository.findOneBy({ id: userId });
-        if (!user) {
+        const userFound = await this.userRepository.findOneBy({ id: userId });
+        if (!userFound) {
             throw new NotFoundException();
         }
 
         const todo = this.todoRepository.create({
             ...createTodoDto,
-            user,
+            user: userFound,
         });
 
-        return this.todoRepository.save(todo);
+        const { user, ...rest } = await this.todoRepository.save(todo);
+
+        return rest;
     }
     
     async findUserTodos(userId: number) {
@@ -41,15 +43,51 @@ export class TodosService {
         return todosList;
     }
     
-    findOne(id: number) {
-        return `This action returns a #${id} todo`;
+    async findOne(id: number, userId: number) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        const todo = await this.todoRepository.findOne({ where: { id, user } });
+
+        if (!todo) {
+            throw new NotFoundException();
+        }
+
+        return todo;
     }
     
-    update(id: number, updateTodoDto: UpdateTodoDto) {
-        return `This action updates a #${id} todo`;
+    async update(userId: number, id: number, updateTodoDto: UpdateTodoDto) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        const todoFound = await this.todoRepository.findOne({ where: { id, user } });
+        if (!todoFound) {
+            throw new NotFoundException();
+        }
+        
+        const newTodo = {
+            ...todoFound,
+            ...updateTodoDto,
+        }
+
+        return this.todoRepository.save(newTodo);
     }
     
-    remove(id: number) {
-        return `This action removes a #${id} todo`;
+    async remove(userId: number, id: number) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new NotFoundException();
+        }
+
+        const todoFound = await this.todoRepository.findOne({ where: { id, user } });
+        if (!todoFound) {
+            throw new NotFoundException();
+        }
+
+        return await this.todoRepository.remove(todoFound);
     }
 }

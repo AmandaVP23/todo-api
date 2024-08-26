@@ -8,6 +8,7 @@ import { RegisterUserDTO } from '../users/dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BlacklistToken } from './entities/blacklist-token.entity';
 import { Repository } from 'typeorm';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +37,7 @@ export class AuthService {
 
         return {
             access_token: await this.jwtService.signAsync(payload),
+            user: instanceToPlain(user) as User,
         };
     }
 

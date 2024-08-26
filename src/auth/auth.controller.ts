@@ -8,7 +8,7 @@ import {
     UseGuards,
     Request
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { AuthGuard } from './auth.guard';
@@ -42,8 +42,9 @@ export class AuthController {
         return this.authService.logout(token);
     }
 
-    @UseGuards(AuthGuard)
     @Get('protected')
+    @UseGuards(AuthGuard)
+    @ApiBearerAuth()
     getProtected(@Request() req) {
         return req.user;
     }
