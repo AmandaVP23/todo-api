@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { TodoStatus } from "../todo-status.enum";
 
 @Entity()
@@ -22,4 +22,10 @@ export class Todo {
         default: TodoStatus.PENDING,
     })
     status: TodoStatus;
+
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

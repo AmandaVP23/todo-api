@@ -26,6 +26,7 @@ import { ConfigModule } from '@nestjs/config';
             autoLoadEntities: true,
             synchronize: true, // shouldnt be used in production
             migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+            timezone: 'Z'
         }),
     ],
     controllers: [AppController],

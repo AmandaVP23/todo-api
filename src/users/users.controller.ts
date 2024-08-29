@@ -1,4 +1,4 @@
-import { Get, Controller, Request, UseGuards } from '@nestjs/common';
+import { Get, Controller, Request, UseGuards, NotFoundException } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from './users.service';
@@ -13,7 +13,12 @@ export class UsersController {
     @Get('me')
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
-    getLoggedUser(@Request() req) {
-        return instanceToPlain(this.usersService.findOne(req['user'].id)) as User;
+    async getLoggedUser(@Request() req) {
+        const userFound = await this.usersService.findOne(req['userId']);
+
+        if (!userFound) {
+            throw new NotFoundException();
+        }
+        return instanceToPlain(userFound) as User;
     }
 }

@@ -3,8 +3,10 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { CursorPaginationDTO } from 'src/misc/dto/cursor-pagination.dto';
+import { DEFAULT_PAGINATION_LIMIT } from 'src/misc/constants';
 
 @Injectable()
 export class TodosService {
@@ -32,14 +34,39 @@ export class TodosService {
         return rest;
     }
     
-    async findUserTodos(userId: number) {
+    async findUserTodos(userId: number, paginationDTO: CursorPaginationDTO) {
         const user = await this.userRepository.findOneBy({ id: userId });
         if (!user) {
             throw new NotFoundException();
         }
 
-        const todosList = await this.todoRepository.find({ where: { user } })
+        console.log(paginationDTO);
 
+        // const where: any = {};
+        // if (paginationDTO.cursor) {
+        //     where.createdAt = LessThan(new Date(paginationDTO.cursor));
+        // }
+
+        // where.userId = user.id;
+
+        // return this.todoRepository.find({
+        //     where,
+        //     order: {
+        //         createdAt: 'DESC',
+        //     },
+        //     take: paginationDTO.limit || DEFAULT_PAGINATION_LIMIT,
+        // })
+
+        let query = this.todoRepository.createQueryBuilder('todo')
+            .orderBy('todo.createdAt', 'DESC')
+            .where('todo.userId = :userId', { userId })
+            .limit(paginationDTO.limit ? Number(paginationDTO.limit) : DEFAULT_PAGINATION_LIMIT)
+
+        if (paginationDTO.cursor) {
+            query = query.andWhere('todo.createdAt < :cursor', { cursor: paginationDTO.cursor });
+        }
+
+        const todosList = await query.getMany();
         return todosList;
     }
     

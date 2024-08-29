@@ -19,7 +19,6 @@ import { RegisterUserDTO } from 'src/users/dto/register-user.dto';
 export class AuthController {
     constructor(private authService: AuthService) {}
 
-    // @HttpCode(HttpStatus.OK)
     @Post('login')
     @ApiOperation({ summary: 'Login' })
     @ApiBody({ type: LoginDTO })
