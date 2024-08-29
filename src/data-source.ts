@@ -17,7 +17,7 @@ export default new DataSource({
     database: 'todo',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     // entities: [User, Todo, BlacklistToken],
-    synchronize: false, // shouldnt be used in production 
-    migrations: ['src/migrations/**/*.ts'],
+    synchronize: false,
+    migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
     migrationsTableName: 'migration_table',
 });

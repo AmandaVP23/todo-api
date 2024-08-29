@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "yarn build && typeorm-ts-node-commonjs -d dist/data-source.js"
+    "typeorm:dev": "yarn build && typeorm-ts-node-commonjs -d dist/data-source.js",
+    "typeorm": "typeorm-ts-node-commonjs -d dist/data-source.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

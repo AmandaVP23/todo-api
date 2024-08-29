@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+host="$1"
+shift
+cmd="$@"
+
+until nc -z -v -w30 "$host" 3306; do
+  >&2 echo "MariaDB is unavailable - sleeping"
+  sleep 1
+done
+
+>&2 echo "MariaDB is up - executing command"
+exec $cmd
