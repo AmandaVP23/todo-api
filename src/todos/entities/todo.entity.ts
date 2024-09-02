@@ -7,10 +7,14 @@ export class Todo {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @Column()
+    @Column({
+        length: 255
+    })
     title: string;
 
-    @Column()
+    @Column({
+        length: 1000
+    })
     description: string;
 
     @ManyToOne(() => User, user => user.todos)
@@ -22,6 +26,9 @@ export class Todo {
         default: TodoStatus.PENDING,
     })
     status: TodoStatus;
+
+    @Column({ nullable: true })
+    date: Date | null;
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;

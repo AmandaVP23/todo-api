@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateTodoDto {
     @ApiProperty()
@@ -6,4 +6,7 @@ export class CreateTodoDto {
 
     @ApiProperty()
     description: string;
+
+    @ApiPropertyOptional()
+    date: Date | null;
 }
